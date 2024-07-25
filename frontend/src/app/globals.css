@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0; /* Cor do texto */
+  --background-start-rgb: 240, 248, 255; /* Cor de fundo clara inicial */
+  --background-end-rgb: 255, 255, 255; /* Cor de fundo clara final */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255; /* Cor do texto no modo escuro */
+    --background-start-rgb: 0, 0, 0; /* Cor de fundo escura inicial */
+    --background-end-rgb: 20, 20, 20; /* Cor de fundo escura final */
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      rgb(var(--background-start-rgb)),
+      rgb(var(--background-end-rgb))
+    );
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
