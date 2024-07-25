@@ -13,7 +13,7 @@ app.use(router);
 const startServer = async () => {
   try {
     await sequelize.authenticate();
-    await sequelize.sync({ force: true }); // Sincronizar o modelo com o banco de dados
+    await sequelize.sync({ force: true }); 
     app.listen(3001, () => {
       console.log('Server running on port 3001');
     });
