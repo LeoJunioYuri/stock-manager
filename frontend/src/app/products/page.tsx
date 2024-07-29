@@ -34,6 +34,7 @@ const ProductsPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [openModal, setOpenModal] = useState(false); // Controla a abertura do modal
   const [isEditing, setIsEditing] = useState(false); // Controla se o modal é para edição
+  const [openDeleteModal, setOpenDeleteModal] = useState(false); // Controla a abertura do modal de exclusão
 
   const fetchProducts = async (page = 1) => {
     try {
@@ -87,6 +88,22 @@ const ProductsPage = () => {
     }
   };
 
+  const handleDeleteProduct = async () => {
+    if (selectedProduct) {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.delete(
+          `http://localhost:3001/api/products/${selectedProduct.id}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setOpenDeleteModal(false); // Fecha o modal de exclusão após excluir o produto
+        fetchProducts();
+      } catch (error) {
+        console.error("Error deleting product:", error);
+      }
+    }
+  };
+
   const handleOpenEditModal = (product: Product) => {
     setSelectedProduct(product);
     setName(product.name);
@@ -105,6 +122,11 @@ const ProductsPage = () => {
     setImageUrl("");
     setIsEditing(false); // Define o modal como criação
     setOpenModal(true);
+  };
+
+  const handleOpenDeleteModal = (product: Product) => {
+    setSelectedProduct(product);
+    setOpenDeleteModal(true);
   };
 
   return (
@@ -134,13 +156,22 @@ const ProductsPage = () => {
                   style={{ width: "100%" }}
                 />
               )}
-              <Button
-                variant="contained"
-                color="secondary"
-                onClick={() => handleOpenEditModal(product)}
-              >
-                Edit
-              </Button>
+              <Box display="flex" gap={1} mt={2}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => handleOpenEditModal(product)}
+                >
+                  Edit
+                </Button>
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => handleOpenDeleteModal(product)}
+                >
+                  Delete
+                </Button>
+              </Box>
             </Box>
           </Grid>
         ))}
@@ -203,6 +234,29 @@ const ProductsPage = () => {
           <Button onClick={() => setOpenModal(false)}>Cancel</Button>
           <Button onClick={isEditing ? handleEditProduct : handleCreateProduct} color="primary">
             {isEditing ? "Save" : "Create"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Modal de Exclusão */}
+      <Dialog
+        open={openDeleteModal}
+        onClose={() => setOpenDeleteModal(false)}
+        PaperProps={{
+          style: {
+            backgroundColor: "white",
+            borderRadius: "8px",
+          },
+        }}
+      >
+        <DialogTitle>Delete Product</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete this product?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDeleteModal(false)}>Cancel</Button>
+          <Button onClick={handleDeleteProduct} color="error">
+            Delete
           </Button>
         </DialogActions>
       </Dialog>

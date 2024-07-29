@@ -3,6 +3,8 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import sequelize from './config/database';
 import router from './routes';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const app = express();
 

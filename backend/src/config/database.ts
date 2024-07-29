@@ -1,12 +1,23 @@
 import { Sequelize } from 'sequelize';
+import dotenv from 'dotenv';
 
-// Criação da instância do Sequelize
-const sequelize = new Sequelize('stock_manager', 'root', 'Leo.mysql200', {
-  host: 'localhost',
-  dialect: 'mysql', 
-});
+dotenv.config();
 
-// Função para testar a conexão
+type Dialect = 'mysql' | 'postgres' | 'sqlite' | 'mariadb' | 'mssql';
+
+const dialect: Dialect = (process.env.DB_DIALECT as Dialect) || 'mysql';
+
+const sequelize = new Sequelize(
+  process.env.DB_NAME || 'default_db_name',
+  process.env.DB_USER || 'default_user',
+  process.env.DB_PASSWORD || 'default_password', 
+  {
+    host: process.env.DB_HOST || 'localhost',
+    dialect: dialect,
+    port: Number(process.env.DB_PORT) || 3306,
+  }
+);
+
 const testConnection = async () => {
   try {
     await sequelize.authenticate();
@@ -16,7 +27,6 @@ const testConnection = async () => {
   }
 };
 
-// Testa a conexão ao iniciar
 testConnection();
 
 export default sequelize;

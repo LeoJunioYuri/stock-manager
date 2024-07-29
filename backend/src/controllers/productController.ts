@@ -53,3 +53,22 @@ export const updateProduct = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Error updating product' });
   }
 };
+
+export const deleteProduct = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const result = await Product.destroy({
+      where: { id: id },
+    });
+
+    if (result) {
+      res.status(200).json({ message: 'Product deleted successfully' });
+    } else {
+      res.status(404).json({ message: 'Product not found' });
+    }
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
