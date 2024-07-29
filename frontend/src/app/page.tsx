@@ -96,7 +96,7 @@ const LoginPage = () => {
           variant="text"
           onClick={() => setShowRegister(!showRegister)}
           fullWidth
-          className="button-text mt-4"
+          className="button-secundary mt-4"
         >
           {showRegister ? "Cancel Registration" : "Create an Account"}
         </Button>
