@@ -1,46 +1,78 @@
-'use client'
-import React, { useState } from 'react';
-import { Container, Box, Typography, TextField, Button } from '@mui/material';
-import axios from 'axios';
+"use client";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation"; // Importar useRouter
+import { Container, Box, Typography, TextField, Button } from "@mui/material";
+import axios from "axios";
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [newEmail, setNewEmail] = useState('');
-  const [newPassword, setNewPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
   const [showRegister, setShowRegister] = useState(false);
+  const router = useRouter(); // Inicializar useRouter
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('/api/login', { email, password });
+      const response = await axios.post('http://localhost:3001/api/login', { email, password });
+      const { token } = response.data;
+
+      // Armazenar o token no localStorage
+      localStorage.setItem('token', token);
+
       console.log('Login Successful', response.data);
+      // Redirecionar para /products após login bem-sucedido
+      router.push('/products');
     } catch (error) {
-      console.error('Login Error', error);
+      if (axios.isAxiosError(error)) {
+        console.error('Login Error', error.response ? error.response.data : error.message);
+      } else if (error instanceof Error) {
+        console.error('Login Error', error.message);
+      } else {
+        console.error('Unexpected Error', error);
+      }
     }
   };
 
   const handleRegister = async () => {
     try {
-      const response = await axios.post('/api/register', { email: newEmail, password: newPassword });
+      const response = await axios.post('http://localhost:3001/api/register', { email: newEmail, password: newPassword });
       console.log('Register Successful', response.data);
       setShowRegister(false);
     } catch (error) {
-      console.error('Register Error', error);
+      if (axios.isAxiosError(error)) {
+        console.error('Register Error', error.response ? error.response.data : error.message);
+      } else if (error instanceof Error) {
+        console.error('Register Error', error.message);
+      } else {
+        console.error('Unexpected Error', error);
+      }
     }
   };
 
   return (
-    <Container maxWidth="sm" className="bg-gray-800 text-white p-6 rounded-lg shadow-lg">
-      <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" height="100vh">
-        <Typography variant="h4" className="mb-4">Login</Typography>
+    <Container
+      maxWidth="sm"
+      className="bg-gray-800 text-white p-6 rounded-lg shadow-lg"
+    >
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        height="100vh"
+      >
+        <Typography variant="h4" className="mb-4">
+          Login
+        </Typography>
         <TextField
           label="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           fullWidth
           margin="normal"
-          InputProps={{ style: { color: 'white' } }}  // Ajuste a cor do texto do input
-          InputLabelProps={{ style: { color: '#aaa' } }}  // Ajuste a cor do label
+          InputProps={{ style: { color: "white" } }} // Ajuste a cor do texto do input
+          InputLabelProps={{ style: { color: "#aaa" } }} // Ajuste a cor do label
         />
         <TextField
           label="Password"
@@ -49,8 +81,8 @@ const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
           fullWidth
           margin="normal"
-          InputProps={{ style: { color: 'white' } }}  // Ajuste a cor do texto do input
-          InputLabelProps={{ style: { color: '#aaa' } }}  // Ajuste a cor do label
+          InputProps={{ style: { color: "white" } }} // Ajuste a cor do texto do input
+          InputLabelProps={{ style: { color: "#aaa" } }} // Ajuste a cor do label
         />
         <Button
           variant="contained"
@@ -68,7 +100,7 @@ const LoginPage = () => {
           className="mt-4"
           fullWidth
         >
-          {showRegister ? 'Cancel Registration' : 'Create an Account'}
+          {showRegister ? "Cancel Registration" : "Create an Account"}
         </Button>
 
         {showRegister && (
@@ -80,8 +112,8 @@ const LoginPage = () => {
               onChange={(e) => setNewEmail(e.target.value)}
               fullWidth
               margin="normal"
-              InputProps={{ style: { color: 'white' } }}  // Ajuste a cor do texto do input
-              InputLabelProps={{ style: { color: '#aaa' } }}  // Ajuste a cor do label
+              InputProps={{ style: { color: "white" } }} // Ajuste a cor do texto do input
+              InputLabelProps={{ style: { color: "#aaa" } }} // Ajuste a cor do label
             />
             <TextField
               label="Password"
@@ -90,8 +122,8 @@ const LoginPage = () => {
               onChange={(e) => setNewPassword(e.target.value)}
               fullWidth
               margin="normal"
-              InputProps={{ style: { color: 'white' } }}  // Ajuste a cor do texto do input
-              InputLabelProps={{ style: { color: '#aaa' } }}  // Ajuste a cor do label
+              InputProps={{ style: { color: "white" } }} // Ajuste a cor do texto do input
+              InputLabelProps={{ style: { color: "#aaa" } }} // Ajuste a cor do label
             />
             <Button
               variant="contained"

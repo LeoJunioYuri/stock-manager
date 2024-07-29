@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import sequelize from './config/database';
@@ -8,12 +8,12 @@ const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(router);
+app.use('/api', router);
 
 const startServer = async () => {
   try {
     await sequelize.authenticate();
-    await sequelize.sync({ force: true }); 
+    await sequelize.sync({ force: true });
     app.listen(3001, () => {
       console.log('Server running on port 3001');
     });

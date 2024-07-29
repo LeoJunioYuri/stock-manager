@@ -14,12 +14,16 @@ const ProductsPage = () => {
   const [totalPages, setTotalPages] = useState(1);
 
   const fetchProducts = async (page = 1) => {
-    const token = localStorage.getItem('token');
-    const response = await axios.get(`http://localhost:3001/api/products?page=${page}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    setProducts(response.data.rows);
-    setTotalPages(Math.ceil(response.data.count / 10));
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.get(`http://localhost:3001/api/products?page=${page}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setProducts(response.data.rows);
+      setTotalPages(Math.ceil(response.data.count / 10));
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
   };
 
   useEffect(() => {
@@ -27,13 +31,17 @@ const ProductsPage = () => {
   }, [page]);
 
   const handleCreateProduct = async () => {
-    const token = localStorage.getItem('token');
-    await axios.post(
-      'http://localhost:3001/api/products',
-      { name, description, price, imageUrl },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    fetchProducts();
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post(
+        'http://localhost:3001/api/products',
+        { name, description, price, imageUrl },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      fetchProducts(); // Atualizar a lista de produtos após adicionar um novo produto
+    } catch (error) {
+      console.error('Error creating product:', error);
+    }
   };
 
   return (
