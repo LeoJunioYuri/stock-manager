@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation"; // Importar useRouter
+import { useRouter } from "next/navigation"; 
 import { Container, Box, Typography, TextField, Button } from "@mui/material";
 import axios from "axios";
 
@@ -10,18 +10,16 @@ const LoginPage = () => {
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [showRegister, setShowRegister] = useState(false);
-  const router = useRouter(); // Inicializar useRouter
+  const router = useRouter(); 
 
   const handleLogin = async () => {
     try {
       const response = await axios.post('http://localhost:3001/api/login', { email, password });
       const { token } = response.data;
 
-      // Armazenar o token no localStorage
       localStorage.setItem('token', token);
 
       console.log('Login Successful', response.data);
-      // Redirecionar para /products após login bem-sucedido
       router.push('/products');
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -71,8 +69,8 @@ const LoginPage = () => {
           onChange={(e) => setEmail(e.target.value)}
           fullWidth
           margin="normal"
-          InputProps={{ style: { color: "white" } }} // Ajuste a cor do texto do input
-          InputLabelProps={{ style: { color: "#aaa" } }} // Ajuste a cor do label
+          InputProps={{ style: { color: "white" } }} 
+          InputLabelProps={{ style: { color: "#aaa" } }} 
         />
         <TextField
           label="Password"
@@ -81,8 +79,8 @@ const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
           fullWidth
           margin="normal"
-          InputProps={{ style: { color: "white" } }} // Ajuste a cor do texto do input
-          InputLabelProps={{ style: { color: "#aaa" } }} // Ajuste a cor do label
+          InputProps={{ style: { color: "white" } }} 
+          InputLabelProps={{ style: { color: "#aaa" } }}
         />
         <Button
           variant="contained"
@@ -112,8 +110,8 @@ const LoginPage = () => {
               onChange={(e) => setNewEmail(e.target.value)}
               fullWidth
               margin="normal"
-              InputProps={{ style: { color: "white" } }} // Ajuste a cor do texto do input
-              InputLabelProps={{ style: { color: "#aaa" } }} // Ajuste a cor do label
+              InputProps={{ style: { color: "white" } }}
+              InputLabelProps={{ style: { color: "#aaa" } }}
             />
             <TextField
               label="Password"
@@ -122,8 +120,8 @@ const LoginPage = () => {
               onChange={(e) => setNewPassword(e.target.value)}
               fullWidth
               margin="normal"
-              InputProps={{ style: { color: "white" } }} // Ajuste a cor do texto do input
-              InputLabelProps={{ style: { color: "#aaa" } }} // Ajuste a cor do label
+              InputProps={{ style: { color: "white" } }} 
+              InputLabelProps={{ style: { color: "#aaa" } }} 
             />
             <Button
               variant="contained"

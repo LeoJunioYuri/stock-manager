@@ -1,11 +1,5 @@
 import { Request, Response } from 'express';
-import Product from '../models/Product';
-
-// export const createProduct = async (req: Request, res: Response) => {
-//   const { name, description, price, imageUrl } = req.body;
-//   const product = await Product.create({ name, description, price, imageUrl });
-//   res.status(201).json(product);
-// };
+import Product from '../models/Product'; // Ajuste o caminho conforme necessário
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
@@ -31,8 +25,6 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-
-
 export const getProducts = async (req: Request, res: Response) => {
   const { page = 1, limit = 10 } = req.query;
   const offset = (Number(page) - 1) * Number(limit);
@@ -41,3 +33,23 @@ export const getProducts = async (req: Request, res: Response) => {
   res.json({ count, rows });
 };
 
+export const updateProduct = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { name, description, price, imageUrl } = req.body;
+
+    const product = await Product.findByPk(id);
+    if (!product) return res.status(404).json({ error: 'Product not found' });
+
+    product.name = name;
+    product.description = description;
+    product.price = parseFloat(price);
+    product.imageUrl = imageUrl;
+
+    await product.save();
+    res.json(product);
+  } catch (error) {
+    console.error('Error updating product:', error);
+    res.status(500).json({ error: 'Error updating product' });
+  }
+};
