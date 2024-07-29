@@ -1,32 +1,90 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* globals.css */
 
 :root {
-  --foreground-rgb: 0, 0, 0; /* Cor do texto */
-  --background-start-rgb: 240, 248, 255; /* Cor de fundo clara inicial */
-  --background-end-rgb: 255, 255, 255; /* Cor de fundo clara final */
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255; /* Cor do texto no modo escuro */
-    --background-start-rgb: 0, 0, 0; /* Cor de fundo escura inicial */
-    --background-end-rgb: 20, 20, 20; /* Cor de fundo escura final */
-  }
+  --primary-color: #03242f;
+  --secondary-color: #42b7bc;
+  --background-color: #f5f5f5;
+  --white-color: #ffffff;
+  --black-color: #000000;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      rgb(var(--background-start-rgb)),
-      rgb(var(--background-end-rgb))
-    );
+  background-color: var(--background-color);
+  color: var(--black-color);
+  font-family: 'Inter', sans-serif;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+.container {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+}
+
+.text-field {
+  color: var(--white-color);
+}
+
+.text-field-label {
+  color: #aaa;
+}
+
+.button-primary {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+}
+
+.button-secondary {
+  background-color: var(--secondary-color);
+  color: var(--white-color);
+}
+
+.button-text {
+  color: var(--white-color);
+}
+
+/* globals.css */
+
+:root {
+  --primary-color: #03242f;
+  --secondary-color: #42b7bc;
+  --background-color: #f5f5f5;
+  --white-color: #ffffff;
+  --black-color: #000000;
+}
+
+body {
+  background-color: var(--background-color);
+  color: var(--black-color);
+  font-family: 'Inter', sans-serif;
+}
+
+.container {
+  background-color: var(--white-color);
+  color: var(--black-color);
+}
+
+.button-primary {
+  background-color: var(--primary-color);
+  color: var(--white-color);
+}
+
+.button-secondary {
+  background-color: var(--secondary-color);
+  color: var(--white-color);
+}
+
+.button-error {
+  background-color: var(--black-color);
+  color: var(--white-color);
+}
+
+.dialog {
+  background-color: var(--white-color);
+}
+
+.text-field {
+  color: var(--black-color);
+}
+
+.text-field-label {
+  color: var(--black-color);
 }

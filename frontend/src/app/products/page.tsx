@@ -46,7 +46,7 @@ const ProductsPage = () => {
         }
       );
       setProducts(response.data.rows);
-      setTotalPages(Math.ceil(response.data.count / 10));
+      setTotalPages(Math.ceil(response.data.count / 6));
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -130,14 +130,14 @@ const ProductsPage = () => {
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" className="container">
       <Typography variant="h4" gutterBottom color="textPrimary">
         Products
       </Typography>
       <Button
         variant="contained"
-        color="primary"
         onClick={handleOpenCreateModal}
+        className="button-primary"
         style={{ marginBottom: '16px' }} // Espaçamento abaixo do botão
       >
         Add Product
@@ -145,10 +145,12 @@ const ProductsPage = () => {
       <Grid container spacing={2}>
         {products.map((product) => (
           <Grid item key={product.id} xs={12} sm={6} md={4}>
-            <Box border={1} borderRadius={4} p={2}>
-              <Typography variant="h6">{product.name}</Typography>
-              <Typography>{product.description}</Typography>
-              <Typography>${product.price}</Typography>
+            <Box border={1} borderRadius={4} p={2} borderColor="textSecondary">
+              <Typography variant="h6" color="textPrimary">
+                {product.name}
+              </Typography>
+              <Typography color="textSecondary">{product.description}</Typography>
+              <Typography color="textPrimary">${product.price}</Typography>
               {product.imageUrl && (
                 <img
                   src={product.imageUrl}
@@ -159,15 +161,15 @@ const ProductsPage = () => {
               <Box display="flex" gap={1} mt={2}>
                 <Button
                   variant="contained"
-                  color="secondary"
                   onClick={() => handleOpenEditModal(product)}
+                  className="button-secondary"
                 >
                   Edit
                 </Button>
                 <Button
                   variant="contained"
-                  color="error"
                   onClick={() => handleOpenDeleteModal(product)}
+                  className="button-error"
                 >
                   Delete
                 </Button>
@@ -198,6 +200,7 @@ const ProductsPage = () => {
             borderRadius: "8px",
           },
         }}
+        className="dialog"
       >
         <DialogTitle>{isEditing ? "Edit Product" : "Add Product"}</DialogTitle>
         <DialogContent>
@@ -207,6 +210,8 @@ const ProductsPage = () => {
             onChange={(e) => setName(e.target.value)}
             fullWidth
             margin="normal"
+            className="text-field"
+            InputLabelProps={{ className: "text-field-label" }}
           />
           <TextField
             label="Description"
@@ -214,6 +219,8 @@ const ProductsPage = () => {
             onChange={(e) => setDescription(e.target.value)}
             fullWidth
             margin="normal"
+            className="text-field"
+            InputLabelProps={{ className: "text-field-label" }}
           />
           <TextField
             label="Price"
@@ -221,6 +228,8 @@ const ProductsPage = () => {
             onChange={(e) => setPrice(e.target.value)}
             fullWidth
             margin="normal"
+            className="text-field"
+            InputLabelProps={{ className: "text-field-label" }}
           />
           <TextField
             label="Image URL"
@@ -228,11 +237,13 @@ const ProductsPage = () => {
             onChange={(e) => setImageUrl(e.target.value)}
             fullWidth
             margin="normal"
+            className="text-field"
+            InputLabelProps={{ className: "text-field-label" }}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenModal(false)}>Cancel</Button>
-          <Button onClick={isEditing ? handleEditProduct : handleCreateProduct} color="primary">
+          <Button onClick={isEditing ? handleEditProduct : handleCreateProduct} className="button-primary">
             {isEditing ? "Save" : "Create"}
           </Button>
         </DialogActions>
@@ -248,14 +259,15 @@ const ProductsPage = () => {
             borderRadius: "8px",
           },
         }}
+        className="dialog"
       >
         <DialogTitle>Delete Product</DialogTitle>
         <DialogContent>
-          <Typography>Are you sure you want to delete this product?</Typography>
+          <Typography color="textPrimary">Are you sure you want to delete this product?</Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpenDeleteModal(false)}>Cancel</Button>
-          <Button onClick={handleDeleteProduct} color="error">
+          <Button onClick={handleDeleteProduct} className="button-error">
             Delete
           </Button>
         </DialogActions>

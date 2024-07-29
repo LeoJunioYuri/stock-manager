@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 import { Container, Box, Typography, TextField, Button } from "@mui/material";
 import axios from "axios";
+import "./globals.css"; // Importando o arquivo de estilos
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -10,7 +11,7 @@ const LoginPage = () => {
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [showRegister, setShowRegister] = useState(false);
-  const router = useRouter(); 
+  const router = useRouter();
 
   const handleLogin = async () => {
     try {
@@ -51,7 +52,7 @@ const LoginPage = () => {
   return (
     <Container
       maxWidth="sm"
-      className="bg-gray-800 text-white p-6 rounded-lg shadow-lg"
+      className="container p-6 rounded-lg shadow-lg"
     >
       <Box
         display="flex"
@@ -69,8 +70,8 @@ const LoginPage = () => {
           onChange={(e) => setEmail(e.target.value)}
           fullWidth
           margin="normal"
-          InputProps={{ style: { color: "white" } }} 
-          InputLabelProps={{ style: { color: "#aaa" } }} 
+          className="text-field"
+          InputLabelProps={{ className: "text-field-label" }}
         />
         <TextField
           label="Password"
@@ -79,15 +80,14 @@ const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
           fullWidth
           margin="normal"
-          InputProps={{ style: { color: "white" } }} 
-          InputLabelProps={{ style: { color: "#aaa" } }}
+          className="text-field"
+          InputLabelProps={{ className: "text-field-label" }}
         />
         <Button
           variant="contained"
-          color="primary"
           onClick={handleLogin}
           fullWidth
-          className="mt-4"
+          className="button-primary mt-4"
         >
           Login
         </Button>
@@ -95,8 +95,8 @@ const LoginPage = () => {
         <Button
           variant="text"
           onClick={() => setShowRegister(!showRegister)}
-          className="mt-4"
           fullWidth
+          className="button-text mt-4"
         >
           {showRegister ? "Cancel Registration" : "Create an Account"}
         </Button>
@@ -110,8 +110,8 @@ const LoginPage = () => {
               onChange={(e) => setNewEmail(e.target.value)}
               fullWidth
               margin="normal"
-              InputProps={{ style: { color: "white" } }}
-              InputLabelProps={{ style: { color: "#aaa" } }}
+              className="text-field"
+              InputLabelProps={{ className: "text-field-label" }}
             />
             <TextField
               label="Password"
@@ -120,15 +120,14 @@ const LoginPage = () => {
               onChange={(e) => setNewPassword(e.target.value)}
               fullWidth
               margin="normal"
-              InputProps={{ style: { color: "white" } }} 
-              InputLabelProps={{ style: { color: "#aaa" } }} 
+              className="text-field"
+              InputLabelProps={{ className: "text-field-label" }}
             />
             <Button
               variant="contained"
-              color="secondary"
               onClick={handleRegister}
               fullWidth
-              className="mt-4"
+              className="button-secondary mt-4"
             >
               Register
             </Button>
