@@ -32,7 +32,8 @@ const ProductsPage = () => {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openModal, setOpenModal] = useState(false); // Controla a abertura do modal
+  const [isEditing, setIsEditing] = useState(false); // Controla se o modal é para edição
 
   const fetchProducts = async (page = 1) => {
     try {
@@ -63,18 +64,10 @@ const ProductsPage = () => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       fetchProducts();
+      setOpenModal(false); // Fecha o modal após adicionar o produto
     } catch (error) {
       console.error("Error creating product:", error);
     }
-  };
-
-  const handleOpenEditModal = (product: Product) => {
-    setSelectedProduct(product);
-    setName(product.name);
-    setDescription(product.description);
-    setPrice(product.price.toString());
-    setImageUrl(product.imageUrl || "");
-    setOpenEditModal(true);
   };
 
   const handleEditProduct = async () => {
@@ -86,7 +79,7 @@ const ProductsPage = () => {
           { name, description, price, imageUrl },
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        setOpenEditModal(false);
+        setOpenModal(false); // Fecha o modal após editar o produto
         fetchProducts();
       } catch (error) {
         console.error("Error editing product:", error);
@@ -94,49 +87,39 @@ const ProductsPage = () => {
     }
   };
 
+  const handleOpenEditModal = (product: Product) => {
+    setSelectedProduct(product);
+    setName(product.name);
+    setDescription(product.description);
+    setPrice(product.price.toString());
+    setImageUrl(product.imageUrl || "");
+    setIsEditing(true); // Define o modal como edição
+    setOpenModal(true);
+  };
+
+  const handleOpenCreateModal = () => {
+    setSelectedProduct(null);
+    setName("");
+    setDescription("");
+    setPrice("");
+    setImageUrl("");
+    setIsEditing(false); // Define o modal como criação
+    setOpenModal(true);
+  };
+
   return (
     <Container maxWidth="md">
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom color="textPrimary">
         Products
       </Typography>
-      <Box display="flex" flexDirection="column" mb={2}>
-        <TextField
-          label="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Price"
-          value={price}
-          onChange={(e) => setPrice(e.target.value)}
-          fullWidth
-          margin="normal"
-        />
-        <TextField
-          label="Image URL"
-          value={imageUrl}
-          onChange={(e) => setImageUrl(e.target.value)}
-          fullWidth
-          margin="normal"
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleCreateProduct}
-          fullWidth
-        >
-          Add Product
-        </Button>
-      </Box>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={handleOpenCreateModal}
+        style={{ marginBottom: '16px' }} // Espaçamento abaixo do botão
+      >
+        Add Product
+      </Button>
       <Grid container spacing={2}>
         {products.map((product) => (
           <Grid item key={product.id} xs={12} sm={6} md={4}>
@@ -174,10 +157,10 @@ const ProductsPage = () => {
         </Button>
       </Box>
 
-      {/* Modal de Edição */}
+      {/* Modal de Criação/Edição */}
       <Dialog
-        open={openEditModal}
-        onClose={() => setOpenEditModal(false)}
+        open={openModal}
+        onClose={() => setOpenModal(false)}
         PaperProps={{
           style: {
             backgroundColor: "white",
@@ -185,7 +168,7 @@ const ProductsPage = () => {
           },
         }}
       >
-        <DialogTitle>Edit Product</DialogTitle>
+        <DialogTitle>{isEditing ? "Edit Product" : "Add Product"}</DialogTitle>
         <DialogContent>
           <TextField
             label="Name"
@@ -217,9 +200,9 @@ const ProductsPage = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenEditModal(false)}>Cancel</Button>
-          <Button onClick={handleEditProduct} color="primary">
-            Save
+          <Button onClick={() => setOpenModal(false)}>Cancel</Button>
+          <Button onClick={isEditing ? handleEditProduct : handleCreateProduct} color="primary">
+            {isEditing ? "Save" : "Create"}
           </Button>
         </DialogActions>
       </Dialog>
